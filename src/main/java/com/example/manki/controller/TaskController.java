@@ -2,7 +2,26 @@ package com.example.manki.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+import com.example.manki.model.Task;
+import com.example.manki.service.TaskService;
+import com.example.manki.exception.TaskNotFoundException;
+
+import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/tasks")
@@ -17,13 +36,13 @@ public class TaskController {
         if(tasks.isEmpty()){
             throw new TaskNotFoundException("No tasks found");
         }
-        return Responsiblity.ok(tasks);
+        return ResponseEntity.ok(tasks);
     } 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id){
         return taskService.getTaskById(id)
-        .map(Responsiblity::ok)
-        .orElseThrow(()->new TaskNotfoundException("Task with ID "+id+"not found"));
+        .map(ResponseEntity::ok)
+        .orElseThrow(()->new TaskNotFoundException("Task with ID "+id+"not found"));
     }
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task){
@@ -32,11 +51,11 @@ public class TaskController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody Task updatedTask){
         return taskService.updateTaskStatus(id, updatedTask.isCompleted())
-        .map(Responsiblity::ok)
+        .map(ResponseEntity::ok)
         .orElseThrow(()->new TaskNotFoundException("Task with ID "+ id+"not found"));
     }
     @DeleteMapping("/{id}")
-    public ResponseEnitity<Void> deleteTask(@PathVariable Long id){
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id){
         if(!taskService.getTaskById(id).isPresent()){
             throw new TaskNotFoundException("task with ID"+id+"not found");
         }
