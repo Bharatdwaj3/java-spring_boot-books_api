@@ -1,32 +1,20 @@
 package com.example.manki.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-
-
-
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
 import com.example.manki.model.Task;
 import com.example.manki.service.TaskService;
 import com.example.manki.exception.TaskNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
+
     private final TaskService taskService;
+    
     public TaskController(TaskService taskService){
         this.taskService=taskService;
     }
